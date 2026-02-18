@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from upload_utils import (
     scrape_url,
     process_file_bytes,
@@ -21,7 +22,7 @@ st.set_page_config(
     page_title="SupAI",
     page_icon="🤖",
     layout="centered",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",
 )
 
 # ==========================================
@@ -142,6 +143,20 @@ st.markdown(
     }
     .welcome-card p { font-size: 0.85rem; margin: 0.2rem 0; }
 
+    /* ---- MOBILE ---- */
+    @media (max-width: 768px) {
+        .brand { margin-top: 6vh !important; }
+        .brand h1 { font-size: 2.2rem !important; }
+        .brand p { font-size: 0.88rem !important; }
+        .welcome-card { padding: 1.5rem 0.5rem 1rem 0.5rem !important; }
+        .welcome-card h4 { font-size: 1rem !important; }
+        .block-container {
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+        }
+        [data-testid="stChatMessage"] { padding: 0.6rem 0.75rem !important; }
+    }
+
     </style>
     """,
     unsafe_allow_html=True,
@@ -171,6 +186,8 @@ with st.sidebar:
     st.markdown('<div class="sidebar-tagline">Paste a link or upload docs, then ask anything.</div>', unsafe_allow_html=True)
 
     # ---- Link input ----
+    if st.session_state.pop("_clear_url", False) and "sidebar_url" in st.session_state:
+        del st.session_state["sidebar_url"]
     st.markdown('<div class="sidebar-section-label">🔗 Paste a link</div>', unsafe_allow_html=True)
     url_input = st.text_input(
         "url", placeholder="https://example.com/article",
@@ -227,7 +244,7 @@ if url_go and url_input:
     else:
         st.session_state.processing_input = {"type": "url", "value": url_stripped}
         st.session_state.app_state = "processing"
-        del st.session_state["sidebar_url"]
+        st.session_state["_clear_url"] = True
         st.rerun()
 
 if file_go and uploaded_files:
@@ -269,6 +286,25 @@ if st.session_state.app_state == "entry":
 # ==========================================
 elif st.session_state.app_state == "processing":
     pending = st.session_state.processing_input
+
+    if pending is None:
+        st.session_state.app_state = "chat" if st.session_state.index_data else "entry"
+        st.rerun()
+
+    # Close sidebar on mobile when processing starts
+    components.html(
+        """
+        <script>
+        (function() {
+            var btn = window.parent.document.querySelector(
+                '[data-testid="stSidebarCollapseButton"] button'
+            );
+            if (btn && window.parent.innerWidth <= 768) btn.click();
+        })();
+        </script>
+        """,
+        height=0,
+    )
 
     status = st.status("Processing content...", expanded=True)
     with status:

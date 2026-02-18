@@ -20,7 +20,7 @@ All data is session-based — nothing is stored on disk. Closing the browser tab
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/GautamRonanki/sup-ai.git>
 cd SupAI
 ```
 
@@ -71,7 +71,7 @@ OPENAI_API_KEY=sk-proj-...
 streamlit run app.py
 ```
 
-The app will open in your browser at `http://localhost:8501`.
+The app will open in your browser at http://localhost.
 
 ## How to use
 
@@ -87,7 +87,6 @@ The app will open in your browser at `http://localhost:8501`.
 
 ## Session limits
 
-- **Budget:** $0.10 per session (covers OpenAI API costs for embeddings + chat)
 - **Sources:** Up to 5 sources per session
 - **File size:** Max 10 MB per file
 - **Chunks:** Max 500 text chunks in the index
