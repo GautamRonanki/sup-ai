@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from upload_utils import (
     scrape_url,
     process_file_bytes,
@@ -227,6 +228,23 @@ with st.sidebar:
             del st.session_state[key]
         st.rerun()
 
+# Close sidebar on mobile after submission (runs once on the rerun after button click)
+if st.session_state.pop("_sidebar_close", False):
+    components.html(
+        """
+        <script>
+        (function() {
+            if (window.parent.innerWidth > 768) return;
+            var btn = window.parent.document.querySelector(
+                '[data-testid="stSidebarCollapseButton"] button'
+            );
+            if (btn) btn.click();
+        })();
+        </script>
+        """,
+        height=0,
+    )
+
 # ==========================================
 # SIDEBAR ACTIONS (handle submissions)
 # ==========================================
@@ -244,6 +262,7 @@ if url_go and url_input:
         st.session_state.processing_input = {"type": "url", "value": url_stripped}
         st.session_state.app_state = "processing"
         st.session_state["_clear_url"] = True
+        st.session_state["_sidebar_close"] = True
         st.rerun()
 
 if file_go and uploaded_files:
@@ -259,6 +278,7 @@ if file_go and uploaded_files:
         st.session_state.processing_input = {"type": "files", "value": file_data}
         st.session_state.app_state = "processing"
         del st.session_state["sidebar_files"]
+        st.session_state["_sidebar_close"] = True
         st.rerun()
 
 if sidebar_error:
