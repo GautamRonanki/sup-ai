@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 from upload_utils import (
     scrape_url,
     process_file_bytes,
@@ -290,21 +289,6 @@ elif st.session_state.app_state == "processing":
     if pending is None:
         st.session_state.app_state = "chat" if st.session_state.index_data else "entry"
         st.rerun()
-
-    # Close sidebar on mobile when processing starts
-    components.html(
-        """
-        <script>
-        (function() {
-            var btn = window.parent.document.querySelector(
-                '[data-testid="stSidebarCollapseButton"] button'
-            );
-            if (btn && window.parent.innerWidth <= 768) btn.click();
-        })();
-        </script>
-        """,
-        height=0,
-    )
 
     status = st.status("Processing content...", expanded=True)
     with status:
