@@ -48,3 +48,29 @@ def retrieve_relevant_chunks(question, index_data, top_k=5):
     top_chunks = similarities[:top_k]
 
     return top_chunks, cost
+
+
+def classify_retrieval(top_chunks):
+    if not top_chunks:
+        return {"status": "failed", "reason": "no chunks retrieved", "top_score": 0.0}
+
+    top_score = top_chunks[0]["similarity"]
+
+    if top_score >= 0.7:
+        return {
+            "status": "confident",
+            "reason": "high similarity match found",
+            "top_score": round(top_score, 4),
+        }
+    elif top_score >= 0.4:
+        return {
+            "status": "uncertain",
+            "reason": "low similarity - chunks may not be relevant",
+            "top_score": round(top_score, 4),
+        }
+    else:
+        return {
+            "status": "failed",
+            "reason": "very low similarity - question likely outside knowledge base",
+            "top_score": round(top_score, 4),
+        }

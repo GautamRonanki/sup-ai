@@ -1,0 +1,195 @@
+{
+  "source": "https://en.wikipedia.org/wiki/States_and_union_territories_of_India",
+  "total_test_cases": 9,
+  "total_cost": 0.001064,
+  "summary": {
+    "average_score": 3.78,
+    "scores": [
+      3,
+      1,
+      4,
+      2,
+      5,
+      5,
+      4,
+      5,
+      5
+    ],
+    "avg_total_latency_seconds": 1.309,
+    "avg_retrieval_latency_seconds": 0.185,
+    "avg_generation_latency_seconds": 0.861
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "How many states does India have?",
+      "expected_answer": "India has 28 states and 8 union territories.",
+      "should_answer": true,
+      "rewritten_query": "How many states are there in India?",
+      "actual_answer": "India has 28 states according to the provided context (Source 1).",
+      "retrieval_status": "uncertain",
+      "retrieval_score": 0.5835,
+      "generation_status": "hedged",
+      "score": 3,
+      "score_reason": "The answer is partially correct as it states the number of states but omits the information about union territories.",
+      "latency": {
+        "rewrite_seconds": 0.511,
+        "retrieval_seconds": 0.23,
+        "generation_seconds": 0.692,
+        "total_seconds": 1.433
+      }
+    },
+    {
+      "id": 2,
+      "question": "What is the capital of Maharashtra?",
+      "expected_answer": "Mumbai is the capital of Maharashtra.",
+      "should_answer": true,
+      "rewritten_query": "What is the capital city of Maharashtra?",
+      "actual_answer": "The context provided does not specify the capital of Maharashtra. Therefore, I cannot answer the question based on the available information.",
+      "retrieval_status": "uncertain",
+      "retrieval_score": 0.4029,
+      "generation_status": "refused",
+      "score": 1,
+      "score_reason": "The answer is completely wrong as it fails to provide the correct information about the capital of Maharashtra.",
+      "latency": {
+        "rewrite_seconds": 0.901,
+        "retrieval_seconds": 0.133,
+        "generation_seconds": 0.92,
+        "total_seconds": 1.953
+      }
+    },
+    {
+      "id": 3,
+      "question": "What is the capital city of Andhra Pradesh?",
+      "expected_answer": "Amaravati is the capital of Andhra Pradesh.",
+      "should_answer": true,
+      "rewritten_query": "What is the capital city of Andhra Pradesh?",
+      "actual_answer": "The capital city of Andhra Pradesh is Amaravati, which is currently serving as the temporary capital for both Andhra Pradesh and Telangana for a period not exceeding ten years (according to Source 1).",
+      "retrieval_status": "uncertain",
+      "retrieval_score": 0.5629,
+      "generation_status": "confident",
+      "score": 4,
+      "score_reason": "The answer is correct and provides additional context about Amaravati being a temporary capital, but it is slightly more detailed than the expected answer.",
+      "latency": {
+        "rewrite_seconds": 1.139,
+        "retrieval_seconds": 0.174,
+        "generation_seconds": 0.848,
+        "total_seconds": 2.16
+      }
+    },
+    {
+      "id": 4,
+      "question": "When was the last act of the crown passed?",
+      "expected_answer": "The last act of the crown was passed in 1947.",
+      "should_answer": true,
+      "rewritten_query": "When was the last Crown Act passed?",
+      "actual_answer": "I'm sorry, but your question about the last act of the crown cannot be answered from the available sources. The sources seem to discuss the historical governance of Indian provinces and their relations with the Crown, particularly around the time of 1947. You might consider asking about the significance of the last act passed by the Crown in India or its impact on provincial governance.",
+      "retrieval_status": "failed",
+      "retrieval_score": 0.3817,
+      "generation_status": "refused",
+      "score": 2,
+      "score_reason": "The answer does not provide the correct information about the last act of the crown, which was passed in 1947, and instead suggests that the question cannot be answered.",
+      "latency": {
+        "rewrite_seconds": 0.568,
+        "retrieval_seconds": 0.159,
+        "generation_seconds": 0.0,
+        "total_seconds": 0.727
+      }
+    },
+    {
+      "id": 5,
+      "question": "When did the new Constitution of India come into force?",
+      "expected_answer": "The new Constitution of India came into force on 26 January 1950.",
+      "should_answer": true,
+      "rewritten_query": "When did the new Constitution of India take effect?",
+      "actual_answer": "The new Constitution of India came into force on 26 January 1950 (according to Source 1 and Source 3).",
+      "retrieval_status": "uncertain",
+      "retrieval_score": 0.577,
+      "generation_status": "confident",
+      "score": 5,
+      "score_reason": "The answer is correct and complete, matching the expected answer exactly.",
+      "latency": {
+        "rewrite_seconds": 0.47,
+        "retrieval_seconds": 0.208,
+        "generation_seconds": 0.97,
+        "total_seconds": 1.648
+      }
+    },
+    {
+      "id": 6,
+      "question": "When was Andhra State created?",
+      "expected_answer": "Andhra State was created on 1 October 1953.",
+      "should_answer": true,
+      "rewritten_query": "When was the state of Andhra Pradesh created?",
+      "actual_answer": "Andhra State was created on 1 October 1953 from the Telugu-speaking northern districts of Madras State (according to Source 3).",
+      "retrieval_status": "uncertain",
+      "retrieval_score": 0.5597,
+      "generation_status": "confident",
+      "score": 5,
+      "score_reason": "The answer is correct and complete, providing the exact date of creation along with additional context.",
+      "latency": {
+        "rewrite_seconds": 0.531,
+        "retrieval_seconds": 0.231,
+        "generation_seconds": 0.874,
+        "total_seconds": 1.637
+      }
+    },
+    {
+      "id": 7,
+      "question": "What is the GDP of the United States?",
+      "expected_answer": "",
+      "should_answer": false,
+      "rewritten_query": "What is the current GDP of the United States?",
+      "actual_answer": "I'm sorry, but I can't answer your question about the GDP of the United States based on the available sources. The sources seem to focus on the demographics and administrative divisions of India. A more relevant question you could ask might be, \"What are the key economic indicators of India?\"",
+      "retrieval_status": "failed",
+      "retrieval_score": 0.217,
+      "generation_status": "refused",
+      "score": 4,
+      "score_reason": "Refused but explanation was vague and unrelated to the question.",
+      "latency": {
+        "rewrite_seconds": 0.519,
+        "retrieval_seconds": 0.187,
+        "generation_seconds": 0.0,
+        "total_seconds": 0.707
+      }
+    },
+    {
+      "id": 8,
+      "question": "Who won the FIFA World Cup in 2022?",
+      "expected_answer": "",
+      "should_answer": false,
+      "rewritten_query": "Who was the winner of the FIFA World Cup in 2022?",
+      "actual_answer": "I'm sorry, but I can't answer your question about who won the FIFA World Cup in 2022 based on the available sources. The sources seem to focus on various countries and electoral processes rather than sports events. You might consider asking about the significance of the FIFA World Cup or its history instead!",
+      "retrieval_status": "failed",
+      "retrieval_score": 0.2162,
+      "generation_status": "refused",
+      "score": 5,
+      "score_reason": "correctly refused and explained it doesn't have this information",
+      "latency": {
+        "rewrite_seconds": 0.66,
+        "retrieval_seconds": 0.213,
+        "generation_seconds": 0.0,
+        "total_seconds": 0.872
+      }
+    },
+    {
+      "id": 9,
+      "question": "What is the population of Brazil?",
+      "expected_answer": "",
+      "should_answer": false,
+      "rewritten_query": "What is the current population of Brazil?",
+      "actual_answer": "I'm sorry, but I can't provide an answer to your question about the population of Brazil based on the available sources. The sources seem to focus on population data and statistics related to India. \n\nYou might consider asking about the population of India or specific states within India, which is covered in the sources.",
+      "retrieval_status": "failed",
+      "retrieval_score": 0.3126,
+      "generation_status": "refused",
+      "score": 5,
+      "score_reason": "correctly refused and explained it doesn't have this information",
+      "latency": {
+        "rewrite_seconds": 0.52,
+        "retrieval_seconds": 0.126,
+        "generation_seconds": 0.0,
+        "total_seconds": 0.646
+      }
+    }
+  ]
+}

@@ -7,15 +7,15 @@ from upload_utils import (
 )
 from chunk_articles import chunk_article
 from retrieval import retrieve_relevant_chunks
-from rag_pipeline import generate_answer
+from rag_pipeline import generate_answer, handle_refusal
 
 # ==========================================
 # LIMITS
 # ==========================================
-SESSION_BUDGET = 0.10        # Max $0.10 per session
-MAX_SOURCES = 5              # Max 5 sources per session
-MAX_FILE_SIZE_MB = 10        # Max 10MB per file
-MAX_CHUNKS = 500             # Max 500 chunks in index
+SESSION_BUDGET = 0.10  # Max $0.10 per session
+MAX_SOURCES = 5  # Max 5 sources per session
+MAX_FILE_SIZE_MB = 10  # Max 10MB per file
+MAX_CHUNKS = 500  # Max 500 chunks in index
 
 # Page config
 st.set_page_config(
@@ -183,30 +183,51 @@ def budget_exceeded():
 # ==========================================
 with st.sidebar:
     st.markdown('<div class="sidebar-brand">🤖 SupAI</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-tagline">Paste a link or upload docs, then ask anything.</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="sidebar-tagline">Paste a link or upload docs, then ask anything.</div>',
+        unsafe_allow_html=True,
+    )
 
     # ---- Link input ----
     if st.session_state.pop("_clear_url", False) and "sidebar_url" in st.session_state:
         del st.session_state["sidebar_url"]
-    st.markdown('<div class="sidebar-section-label">🔗 Paste a link</div>', unsafe_allow_html=True)
-    url_input = st.text_input(
-        "url", placeholder="https://example.com/article",
-        label_visibility="collapsed", key="sidebar_url",
+    st.markdown(
+        '<div class="sidebar-section-label">🔗 Paste a link</div>',
+        unsafe_allow_html=True,
     )
-    url_go = st.button("Fetch & Analyze", type="primary", use_container_width=True, key="sidebar_url_btn")
+    url_input = st.text_input(
+        "url",
+        placeholder="https://example.com/article",
+        label_visibility="collapsed",
+        key="sidebar_url",
+    )
+    url_go = st.button(
+        "Fetch & Analyze",
+        type="primary",
+        use_container_width=True,
+        key="sidebar_url_btn",
+    )
 
     st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
 
     # ---- File upload ----
-    st.markdown('<div class="sidebar-section-label">📄 Upload documents</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="sidebar-section-label">📄 Upload documents</div>',
+        unsafe_allow_html=True,
+    )
     uploaded_files = st.file_uploader(
-        "files", type=["pdf", "txt", "doc", "docx", "csv"],
+        "files",
+        type=["pdf", "txt", "doc", "docx", "csv"],
         accept_multiple_files=True,
-        label_visibility="collapsed", key="sidebar_files",
+        label_visibility="collapsed",
+        key="sidebar_files",
     )
     file_go = st.button(
-        "Upload & Analyze", type="primary", use_container_width=True,
-        disabled=not uploaded_files, key="sidebar_files_btn",
+        "Upload & Analyze",
+        type="primary",
+        use_container_width=True,
+        disabled=not uploaded_files,
+        key="sidebar_files_btn",
     )
 
     st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
@@ -214,12 +235,17 @@ with st.sidebar:
     # ---- Loaded sources ----
     src_list = sorted(st.session_state.sources)
     if src_list:
-        st.markdown('<div class="sidebar-section-label">📚 Sources</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div class="sidebar-section-label">📚 Sources</div>',
+            unsafe_allow_html=True,
+        )
         chips_html = ""
         for s in src_list:
             label = s if len(s) < 40 else s[:37] + "..."
             chips_html += f'<span class="source-chip">{label}</span>'
-        st.markdown(f'<div class="source-chips">{chips_html}</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="source-chips">{chips_html}</div>', unsafe_allow_html=True
+        )
         st.markdown('<hr class="sidebar-divider">', unsafe_allow_html=True)
 
     # ---- New session button ----
@@ -266,9 +292,13 @@ if url_go and url_input:
         st.rerun()
 
 if file_go and uploaded_files:
-    oversized = [f.name for f in uploaded_files if f.size > MAX_FILE_SIZE_MB * 1024 * 1024]
+    oversized = [
+        f.name for f in uploaded_files if f.size > MAX_FILE_SIZE_MB * 1024 * 1024
+    ]
     if oversized:
-        sidebar_error = f"Files too large (max {MAX_FILE_SIZE_MB}MB): {', '.join(oversized)}"
+        sidebar_error = (
+            f"Files too large (max {MAX_FILE_SIZE_MB}MB): {', '.join(oversized)}"
+        )
     elif budget_exceeded():
         sidebar_error = "Session budget exceeded. Please start a new session."
     elif len(st.session_state.sources) + len(uploaded_files) > MAX_SOURCES:
@@ -290,12 +320,11 @@ if sidebar_error:
 # ENTRY STATE
 # ==========================================
 if st.session_state.app_state == "entry":
-
     st.markdown(
         '<div class="brand">'
-        '<h1>🤖 SupAI</h1>'
-        '<p>Paste a link or upload documents in the sidebar — then ask anything.</p>'
-        '</div>',
+        "<h1>🤖 SupAI</h1>"
+        "<p>Paste a link or upload documents in the sidebar — then ask anything.</p>"
+        "</div>",
         unsafe_allow_html=True,
     )
 
@@ -345,7 +374,9 @@ elif st.session_state.app_state == "processing":
         st.session_state.processing_input = None
         st.error("Could not process the content. Please try a different link or file.")
         if st.button("← Go Back"):
-            st.session_state.app_state = "chat" if st.session_state.index_data else "entry"
+            st.session_state.app_state = (
+                "chat" if st.session_state.index_data else "entry"
+            )
             st.rerun()
         st.stop()
 
@@ -364,7 +395,9 @@ elif st.session_state.app_state == "processing":
         st.session_state.processing_input = None
         st.error("Could not extract enough text to create chunks.")
         if st.button("← Go Back"):
-            st.session_state.app_state = "chat" if st.session_state.index_data else "entry"
+            st.session_state.app_state = (
+                "chat" if st.session_state.index_data else "entry"
+            )
             st.rerun()
         st.stop()
 
@@ -372,7 +405,7 @@ elif st.session_state.app_state == "processing":
     current_chunks = len(st.session_state.index_data)
     if current_chunks + len(all_chunks) > MAX_CHUNKS:
         st.warning(f"Chunk limit reached. Trimming to {MAX_CHUNKS} total chunks.")
-        all_chunks = all_chunks[:MAX_CHUNKS - current_chunks]
+        all_chunks = all_chunks[: MAX_CHUNKS - current_chunks]
 
     # Embedding + index building
     with status:
@@ -382,10 +415,14 @@ elif st.session_state.app_state == "processing":
 
         st.write("📦 Building index...")
         for chunk, emb in zip(all_chunks, embeddings):
-            st.session_state.index_data.append({
-                "text": chunk["text"], "source": chunk["source"],
-                "chunk_id": chunk["chunk_id"], "embedding": emb,
-            })
+            st.session_state.index_data.append(
+                {
+                    "text": chunk["text"],
+                    "source": chunk["source"],
+                    "chunk_id": chunk["chunk_id"],
+                    "embedding": emb,
+                }
+            )
             st.session_state.sources.add(chunk["source"])
 
     status.update(label="Done!", state="complete")
@@ -399,7 +436,6 @@ elif st.session_state.app_state == "processing":
 # CHAT STATE
 # ==========================================
 elif st.session_state.app_state == "chat":
-
     # ---- Welcome card (empty chat) ----
     if not st.session_state.messages:
         st.markdown(
@@ -418,7 +454,11 @@ elif st.session_state.app_state == "chat":
             if msg["role"] == "assistant" and "sources" in msg:
                 with st.expander("📎 Sources"):
                     for i, src in enumerate(msg["sources"], 1):
-                        src_label = src["source"] if len(src["source"]) < 50 else src["source"][:47] + "..."
+                        src_label = (
+                            src["source"]
+                            if len(src["source"]) < 50
+                            else src["source"][:47] + "..."
+                        )
                         st.markdown(f"**{i}.** {src_label} · `{src['similarity']:.3f}`")
                         st.caption(src["text"][:200] + "...")
 
@@ -437,19 +477,52 @@ elif st.session_state.app_state == "chat":
             # Assistant message
             with st.chat_message("assistant"):
                 with st.spinner("Thinking..."):
+                    from retrieval import retrieve_relevant_chunks, classify_retrieval
+                    from rag_pipeline import generate_answer, classify_generation
+                    from error_logger import log_query
+
+                    from query_rewriter import rewrite_query
+
+                    rewritten_query, rewrite_cost = rewrite_query(user_input)
+                    st.session_state.session_cost += rewrite_cost
+
                     chunks, retrieval_cost = retrieve_relevant_chunks(
-                        user_input, st.session_state.index_data, top_k=3
+                        rewritten_query, st.session_state.index_data, top_k=3
                     )
+
                     answer, llm_cost = generate_answer(user_input, chunks)
                     st.session_state.session_cost += retrieval_cost + llm_cost
+
+                    # Classify and log
+                    retrieval_class = classify_retrieval(chunks)
+                    generation_class = classify_generation(user_input, chunks, answer)
+                    # If retrieval failed, override answer with helpful redirect
+                    if retrieval_class["status"] == "failed":
+                        answer = handle_refusal(user_input, chunks)
+                    log_entry = log_query(
+                        user_input,
+                        rewritten_query,
+                        retrieval_class,
+                        generation_class,
+                        chunks,
+                        answer,
+                    )
 
                 st.markdown(answer)
                 with st.expander("📎 Sources"):
                     for i, src in enumerate(chunks, 1):
-                        src_label = src["source"] if len(src["source"]) < 50 else src["source"][:47] + "..."
+                        src_label = (
+                            src["source"]
+                            if len(src["source"]) < 50
+                            else src["source"][:47] + "..."
+                        )
                         st.markdown(f"**{i}.** {src_label} · `{src['similarity']:.3f}`")
                         st.caption(src["text"][:200] + "...")
 
-            st.session_state.messages.append({
-                "role": "assistant", "content": answer, "sources": chunks,
-            })
+            st.session_state.messages.append(
+                {
+                    "role": "assistant",
+                    "content": answer,
+                    "sources": chunks,
+                }
+            )

@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "question": "How many states does India have?",
+    "expected_answer": "India has 28 states and 8 union territories.",
+    "should_answer": true
+  },
+  {
+    "id": 2,
+    "question": "What is the capital of Maharashtra?",
+    "expected_answer": "Mumbai is the capital of Maharashtra.",
+    "should_answer": true
+  },
+  {
+    "id": 3,
+    "question": "What is the capital city of Andhra Pradesh?",
+    "expected_answer": "Amaravati is the capital of Andhra Pradesh.",
+    "should_answer": true
+  },
+  {
+    "id": 4,
+    "question": "When was the last act of the crown passed?",
+    "expected_answer": "The last act of the crown was passed in 1947.",
+    "should_answer": true
+  },
+  {
+    "id": 5,
+    "question": "When did the new Constitution of India come into force?",
+    "expected_answer": "The new Constitution of India came into force on 26 January 1950.",
+    "should_answer": true
+  },
+  {
+    "id": 6,
+    "question": "When was Andhra State created?",
+    "expected_answer": "Andhra State was created on 1 October 1953.",
+    "should_answer": true
+  },
+  {
+    "id": 7,
+    "question": "What is the GDP of the United States?",
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": 8,
+    "question": "Who won the FIFA World Cup in 2022?",
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": 9,
+    "question": "What is the population of Brazil?",
+    "expected_answer": "",
+    "should_answer": false
+  }
+]

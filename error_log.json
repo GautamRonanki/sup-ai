@@ -1,0 +1,72 @@
+[
+  {
+    "timestamp": "2026-02-19T16:30:27.865482",
+    "question": "What did Gautam eat for linch?",
+    "rewritten_query": "What did Gautam eat for lunch?",
+    "retrieval": {
+      "status": "failed",
+      "reason": "very low similarity - question likely outside knowledge base",
+      "top_score": 0.1408,
+      "sources_retrieved": [
+        "https://en.wikipedia.org/wiki/History_of_Spain",
+        "https://en.wikipedia.org/wiki/History_of_Spain",
+        "https://en.wikipedia.org/wiki/History_of_Spain"
+      ],
+      "scores_per_source": [
+        {
+          "source": "https://en.wikipedia.org/wiki/History_of_Spain",
+          "score": 0.1408
+        },
+        {
+          "source": "https://en.wikipedia.org/wiki/History_of_Spain",
+          "score": 0.1259
+        },
+        {
+          "source": "https://en.wikipedia.org/wiki/History_of_Spain",
+          "score": 0.1038
+        }
+      ]
+    },
+    "generation": {
+      "status": "refused",
+      "reason": "The context does not contain relevant information about Gautam's lunch."
+    },
+    "overall_failure_type": "retrieval_failure",
+    "answer_preview": "The provided context does not contain any information about what Gautam ate for lunch. Therefore, I cannot answer that question."
+  },
+  {
+    "timestamp": "2026-02-19T16:35:30.275141",
+    "question": "What did Gautam eat for lunch?",
+    "rewritten_query": "What did Gautam have for lunch?",
+    "retrieval": {
+      "status": "failed",
+      "reason": "very low similarity - question likely outside knowledge base",
+      "top_score": 0.1418,
+      "sources_retrieved": [
+        "https://en.wikipedia.org/wiki/History_of_Spain",
+        "https://en.wikipedia.org/wiki/History_of_Spain",
+        "https://en.wikipedia.org/wiki/History_of_Spain"
+      ],
+      "scores_per_source": [
+        {
+          "source": "https://en.wikipedia.org/wiki/History_of_Spain",
+          "score": 0.1418
+        },
+        {
+          "source": "https://en.wikipedia.org/wiki/History_of_Spain",
+          "score": 0.1356
+        },
+        {
+          "source": "https://en.wikipedia.org/wiki/History_of_Spain",
+          "score": 0.1117
+        }
+      ]
+    },
+    "generation": {
+      "status": "refused",
+      "reason": "The context does not contain any information about Gautam's lunch."
+    },
+    "overall_failure_type": "retrieval_failure",
+    "answer_preview": "I'm sorry, but I can't answer your question about what Gautam ate for lunch based on the available sources. The sources seem to discuss historical artifacts and figures, particularly related to crowns"
+  }
+]
